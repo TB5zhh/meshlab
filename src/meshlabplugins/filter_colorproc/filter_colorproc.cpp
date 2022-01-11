@@ -74,7 +74,8 @@ FilterColorProc::FilterColorProc()
 		CP_RANDOM_FACE,
 		CP_RANDOM_CONNECTED_COMPONENT,
 		CP_VERTEX_TO_FACE_QUALITY,
-		CP_FACE_TO_VERTEX_QUALITY
+		CP_FACE_TO_VERTEX_QUALITY,
+		CP_SELECT_TYPE,
 	};
 
 	for(ActionIDType tt: types())
@@ -122,6 +123,7 @@ QString FilterColorProc::pythonFilterName(ActionIDType f) const
 	case CP_RANDOM_CONNECTED_COMPONENT:return QString("compute_color_by_conntected_component_per_face");
 	case CP_VERTEX_TO_FACE_QUALITY:    return QString("compute_scalar_transfer_vertex_to_face");
 	case CP_FACE_TO_VERTEX_QUALITY:    return QString("compute_scalar_transfer_face_to_vertex");
+	case CP_SELECT_TYPE:               return QString("annotate_selected_points_to_certain_Scannet_type");
 
 	default: assert(0);
 	}
@@ -160,7 +162,7 @@ QString FilterColorProc::filterName(ActionIDType filter) const
 	case CP_RANDOM_CONNECTED_COMPONENT:return QString("Random Component Color");
 	case CP_VERTEX_TO_FACE_QUALITY:    return QString("Transfer Quality: Vertex to Face");
 	case CP_FACE_TO_VERTEX_QUALITY:    return QString("Transfer Quality: Face to Vertex");
-
+	case CP_SELECT_TYPE:               return QString("Scannet Annotator");
 	default: assert(0);
 	}
 	return QString("error!");
@@ -209,6 +211,7 @@ QString FilterColorProc::filterInfo(ActionIDType filterId) const
 	case CP_RANDOM_CONNECTED_COMPONENT: return QString("Colorize each connected component randomly.");
 	case CP_VERTEX_TO_FACE_QUALITY: return QString("Vertex to Face quality transfer");
 	case CP_FACE_TO_VERTEX_QUALITY: return QString("Face to Vertex quality transfer");
+	case CP_SELECT_TYPE: return QString("annotate selected points to certain Scannet type");
 
 	default: assert(0);
 	}
@@ -223,6 +226,7 @@ int FilterColorProc::getRequirements(const QAction *action)
 	case CP_VERTEX_TO_FACE_QUALITY: return MeshModel::MM_VERTQUALITY;
 	case CP_FACE_TO_VERTEX_QUALITY: return MeshModel::MM_FACEQUALITY;;
 	default : return MeshModel::MM_VERTCOLOR;
+	// TODO check
 	}
 	assert(0);
 }
@@ -237,6 +241,53 @@ RichParameterList FilterColorProc::initParameterList(const QAction *a, const Mes
 		QColor color1 = QColor(0, 0, 0, 255);
 		par.addParam(RichColor("color1", color1, "Color:", "Sets the color to apply to vertices."));
 		par.addParam(RichBool("onSelected", false, "Only on selection", "If checked, only affects selected vertices"));
+		break;
+	}
+	case CP_SELECT_TYPE:
+	{
+		QStringList typeNameList;
+		typeNameList.push_back("wall");
+		typeNameList.push_back("floor");
+		typeNameList.push_back("cabinet");
+		typeNameList.push_back("bed");
+		typeNameList.push_back("chair");
+		typeNameList.push_back("sofa");
+		typeNameList.push_back("table");
+		typeNameList.push_back("door");
+		typeNameList.push_back("window");
+		typeNameList.push_back("bookshelf");
+		typeNameList.push_back("picture");
+		typeNameList.push_back("counter");
+		typeNameList.push_back("blinds");
+		typeNameList.push_back("desk");
+		typeNameList.push_back("shelves");
+		typeNameList.push_back("curtain");
+		typeNameList.push_back("dresser");
+		typeNameList.push_back("pillow");
+		typeNameList.push_back("mirror");
+		typeNameList.push_back("floor mat");
+		typeNameList.push_back("clothes");
+		typeNameList.push_back("ceiling");
+		typeNameList.push_back("books");
+		typeNameList.push_back("refridgerator");
+		typeNameList.push_back("television");
+		typeNameList.push_back("paper");
+		typeNameList.push_back("towel");
+		typeNameList.push_back("shower curtain");
+		typeNameList.push_back("box");
+		typeNameList.push_back("whiteboard");
+		typeNameList.push_back("person");
+		typeNameList.push_back("nightstand");
+		typeNameList.push_back("toilet");
+		typeNameList.push_back("sink");
+		typeNameList.push_back("lamp");
+		typeNameList.push_back("bathtub");
+		typeNameList.push_back("bag");
+		typeNameList.push_back("otherstructure");
+		typeNameList.push_back("otherfurniture");
+		typeNameList.push_back("otherprop");
+		par.addParam(RichEnum("ScannetType", 0, typeNameList, tr("Type:"),
+		                      QString("Choose a ScanNet type")));
 		break;
 	}
 	case CP_THRESHOLDING:
@@ -439,6 +490,13 @@ std::map<std::string, QVariant> FilterColorProc::applyFilter(const QAction *filt
 			vcg::tri::UpdateColor<CMeshO>::PerVertexConstant(m->cm, new_col, selected);
 		}
 		break;
+
+		case CP_SELECT_TYPE:
+		{
+			Color4b new_col = Color4b(255,0,0,0);
+			vcg::tri::UpdateColor<CMeshO>::PerVertexConstant(m->cm, new_col, true);
+			break;
+		}
 
 		case CP_THRESHOLDING:
 		{
@@ -1007,6 +1065,7 @@ std::map<std::string, QVariant> FilterColorProc::applyFilter(const QAction *filt
 		case CP_MAP_VQUALITY_INTO_COLOR:
 		case CP_VERTEX_SMOOTH:
 		case CP_FACE_TO_VERTEX:
+		case CP_SELECT_TYPE:
 		case CP_TEXTURE_TO_VERTEX:          return FilterPlugin::VertexColoring;
 		case CP_SCATTER_PER_MESH:           return FilterPlugin::MeshColoring;
 		case CP_SATURATE_QUALITY:
@@ -1044,6 +1103,7 @@ int FilterColorProc::postCondition( const QAction* filter ) const
 		case CP_MAP_VQUALITY_INTO_COLOR:
 		case CP_VERTEX_SMOOTH:
 		case CP_FACE_TO_VERTEX:
+		case CP_SELECT_TYPE: 
 		case CP_TEXTURE_TO_VERTEX:          return MeshModel::MM_VERTCOLOR;
 		case CP_SATURATE_QUALITY:
 		case CP_CLAMP_QUALITY:              return MeshModel::MM_VERTCOLOR | MeshModel::MM_VERTQUALITY;
@@ -1072,6 +1132,7 @@ int FilterColorProc::getPreConditions(const QAction* filter ) const
 		case CP_SCATTER_PER_MESH:
 		case CP_PERLIN_COLOR:
 		case CP_COLOR_NOISE:                
+		case CP_SELECT_TYPE: 
 		case CP_MESH_TO_FACE:               return MeshModel::MM_NONE;
 		case CP_THRESHOLDING:
 		case CP_CONTR_BRIGHT:
@@ -1106,6 +1167,7 @@ FilterPlugin::FilterArity FilterColorProc::filterArity(const QAction* act ) cons
     switch(ID(act))
     {
 		case CP_FILLING:
+		case CP_SELECT_TYPE: 
 		case CP_COLOURISATION:
 		case CP_PERLIN_COLOR:
 		case CP_COLOR_NOISE:
