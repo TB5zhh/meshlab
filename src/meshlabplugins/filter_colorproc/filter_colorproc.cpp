@@ -493,7 +493,7 @@ std::map<std::string, QVariant> FilterColorProc::applyFilter(const QAction *filt
 
 		case CP_SELECT_TYPE:
 		{
-			int scanType = par.getEnum("ScannetType")
+			int scanType = par.getEnum("ScannetType");
 			switch (scanType)
 			{
 				case  0:vcg::tri::UpdateColor<CMeshO>::PreVertexConstant(m->cm, Color4b(100, 85, 144, 7), true); break;
