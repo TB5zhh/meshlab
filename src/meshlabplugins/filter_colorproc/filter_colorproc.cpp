@@ -538,7 +538,7 @@ std::map<std::string, QVariant> FilterColorProc::applyFilter(const QAction *filt
 				case 39:count = vcg::tri::UpdateColor<CMeshO>::PerVertexConstant(m->cm, Color4b(174, 199, 232, 224), true); break;
 				default: assert(0);
 			}
-			log("Applied: %d vertexes", count)
+			log("Applied: %d vertexes", count);
 			break;
 		}
 
