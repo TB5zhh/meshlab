@@ -493,8 +493,51 @@ std::map<std::string, QVariant> FilterColorProc::applyFilter(const QAction *filt
 
 		case CP_SELECT_TYPE:
 		{
-			Color4b new_col = Color4b(255,0,0,0);
-			vcg::tri::UpdateColor<CMeshO>::PerVertexConstant(m->cm, new_col, true);
+			int scanType = par.getEnum("ScannetType")
+			switch (scanType)
+			{
+				case  0:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(100, 85, 144, 7), true); break;
+				case  1:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(82, 84, 163, 7), true); break;
+				case  2:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(94, 106, 211, 7), true); break;
+				case  3:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(213, 92, 176, 7), true); break;
+				case  4:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(227, 119, 194, 7), true); break;
+				case  5:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(96, 207, 209, 7), true); break;
+				case  6:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(112, 128, 144, 7), true); break;
+				case  7:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(44, 160, 44, 7), true); break;
+				case  8:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(146, 111, 194, 7), true); break;
+				case  9:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(178, 127, 135, 7), true); break;
+				case 10:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(100, 125, 154, 7), true); break;
+				case 11:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(158, 218, 229, 7), true); break;
+				case 12:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(140, 153, 101, 7), true); break;
+				case 13:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(143, 160, 44, 7), true); break;
+				case 14:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(153, 98, 156, 7), true); break;
+				case 15:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(91, 163, 138, 7), true); break;
+				case 16:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(255, 127, 14, 7), true); break;
+				case 17:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(172, 114, 82, 7), true); break;
+				case 18:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(78, 71, 183, 7), true); break;
+				case 19:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(92, 193, 61, 7), true); break;
+				case 20:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(200, 54, 131, 7), true); break;
+				case 21:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(51, 176, 203, 7), true); break;
+				case 22:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(202, 185, 52, 7), true); break;
+				case 23:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(140, 57, 197, 7), true); break;
+				case 24:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(219, 219, 141, 7), true); break;
+				case 25:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(66, 188, 102, 7), true); break;
+				case 26:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(247, 182, 210, 7), true); break;
+				case 27:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(23, 190, 207, 7), true); break;
+				case 28:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(196, 156, 148, 7), true); break;
+				case 29:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(148, 103, 189, 7), true); break;
+				case 30:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(197, 176, 213, 7), true); break;
+				case 31:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(214, 145, 40, 7), true); break;
+				case 32:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(214, 39, 40, 7), true); break;
+				case 33:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(255, 152, 150, 7), true); break;
+				case 34:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(140, 86, 75, 7), true); break;
+				case 35:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(188, 189, 34, 7), true); break;
+				case 36:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(255, 187, 120, 7), true); break;
+				case 37:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(31, 119, 180, 7), true); break;
+				case 38:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(152, 223, 138, 7), true); break;
+				case 39:vcg::tri::UpdateColor<CMesh0>::PreVertexConstant(m->cm, Color4b(174, 199, 232, 7), true); break;
+				default: assert(0);
+			}
 			break;
 		}
 
